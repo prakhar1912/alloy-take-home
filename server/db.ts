@@ -7,12 +7,8 @@ const dbConnect = () =>
   new Promise((resolve, reject) => {
     mongoose.connect(`mongodb://${process.env.MONGO_DB_URL}/${process.env.MONGO_DB_DOCUMENT}`, {
       useNewUrlParser: true,
-      poolsize: 0,
       useCreateIndex: true,
       useUnifiedTopology: true,
-      socketOptions: {
-        socketTimeoutMS: 600
-      }
     });
 
     mongoose.connection.on('connected', () => {
