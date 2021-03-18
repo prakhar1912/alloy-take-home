@@ -5,7 +5,7 @@ dotenv.config();
 
 const dbConnect = () =>
   new Promise((resolve, reject) => {
-    mongoose.connect('xxx-xxxx-xxx-xxxx', {
+    mongoose.connect(`mongodb://${process.env.MONGO_DB_URL}/${process.env.MONGO_DB_DOCUMENT}`, {
       useNewUrlParser: true,
       poolsize: 0,
       useCreateIndex: true,
