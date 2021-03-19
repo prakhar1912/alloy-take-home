@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  web:
+    container_name: alloy
+    build: .
+    env_file: ./.env
+    ports:
+      - "80:${PORT}"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo_db
+    image: mongo
+    ports:
+      - "27017:27017"
