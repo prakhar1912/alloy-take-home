@@ -1,20 +1,32 @@
 import express from "express";
-import bodyParser from "body-parser";
 import path from "path";
+import * as dotenv from "dotenv";
 import db from "./db";
-import Email from "../model/email";
-import User from "../model/user";
+import { Account, Email, User } from "../model";
 import cronJob from "./cronJob";
 import * as slackBot from "./slackBot";
-import * as dotenv from "dotenv";
+
 dotenv.config();
 
 const app = express();
 
 cronJob.start();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 express.static(path.join(__dirname, "../public"));
+
+
+app.post("/signup", async function(req, res) {
+  try {
+    const { email, password } = req.body;
+    const account = new Account({ email, password });
+    await account.save();
+    res.status(200).send("Account created");
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
 
 app.get("/auth/redirect", async function (req, res) {
   if (!req.query.code) {
@@ -61,8 +73,9 @@ app.post("/event", async function (req, res) {
 db.dbConnect()
   .then(() => {
     try {
-      app.listen(process.env.port || 3000, () => {
-        console.log("App is listening on port 3000!");
+      const port = process.env.PORT || 3000;
+      app.listen(port, () => {
+        console.log(`App is listening on port ${port}!`);
       });
     } catch (err) {
       console.log(err);
