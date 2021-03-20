@@ -28,6 +28,23 @@ app.post("/signup", async function(req, res) {
   }
 });
 
+app.post("/login", async function(req, res) {
+  try {
+    const { email, password } = req.body;
+    const user = await Account.findOne({ email }).exec();
+    if (user) {
+      if (user.passwordMatches(password)) {
+        return res.status(200).send(user);
+      }
+      return res.status(400).send("Password does not match");
+    }
+    res.status(400).send("User not found");
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+});
+
 app.get("/auth/redirect", async function (req, res) {
   if (!req.query.code) {
     return;

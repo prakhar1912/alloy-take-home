@@ -16,10 +16,14 @@ const AccountSchema = Schema({
   },
   password: {
     type: String,
-    required: true,
-    select: false
+    required: true
   }
-})
+});
+
+AccountSchema.methods.passwordMatches = function (inputPassword) {
+  console.log(this);
+  return bcrypt.compareSync(inputPassword, this.password);
+};
 
 AccountSchema.pre("save", function(this: IAccountSchema, next) {
   const account = this;
