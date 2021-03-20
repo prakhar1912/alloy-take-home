@@ -8,8 +8,7 @@ services:
       - "80:${PORT}"
     links:
       - mongo
+    restart: always
   mongo:
     container_name: mongo_db
     image: mongo
-    ports:
-      - "27017:27017"
