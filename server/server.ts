@@ -13,7 +13,7 @@ const app = express();
 cronJob.start();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-express.static(path.join(__dirname, "../public"));
+app.use(express.static(path.join(__dirname, "../public")));
 
 
 app.post("/signup", async function(req, res) {
