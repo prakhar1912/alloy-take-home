@@ -35,7 +35,7 @@ app.post("/login", async function(req, res) {
     const user = await Account.findOne({ email }).exec();
     if (user) {
       if (user.passwordMatches(password)) {
-        return res.status(200).send(user);
+        return res.status(200).send("Logged in");
       }
       return res.status(400).send("Password does not match");
     }
@@ -57,12 +57,11 @@ app.get("/auth/redirect", async function (req, res) {
       code: req.query.code
     };
     const response = await slackBot.getAccessToken(data);
-    const user = {
+    const user = new User({
       userId: response.authed_user.id,
-      accessToken: response.access_token,
-    };
-    const newUser = new User(user);
-    await newUser.save();
+      accessToken: response.access_token
+    });
+    await user.save();
     res.sendFile(path.resolve(__dirname + "../../../public/success.html"));
   } catch (err) {
     console.log(err);
