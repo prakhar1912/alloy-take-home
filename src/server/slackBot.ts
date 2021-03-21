@@ -1,9 +1,8 @@
-const rp = require("request-promise");
-import User from "../model/user";
+import rp from "request-promise";
+import { User } from "../model";
 import wiki from "./wiki";
 
 export const getAccessToken = async (data) => {
-  console.log(data);
   const options = {
     method: "POST",
     uri: "https://slack.com/api/oauth.v2.access",
@@ -16,7 +15,7 @@ export const getAccessToken = async (data) => {
 
 export const sendScrappData = async () => {
   try {
-    const users = await User.find();
+    const users = await User.find({});
     const scrappData = await wiki();
     users.forEach(async (user) => {
       const data = {

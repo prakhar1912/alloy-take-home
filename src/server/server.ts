@@ -57,7 +57,6 @@ app.get("/auth/redirect", async function (req, res) {
       code: req.query.code
     };
     const response = await slackBot.getAccessToken(data);
-    console.log("Response:::::", response);
     const user = {
       userId: response.authed_user.id,
       accessToken: response.access_token,
@@ -78,7 +77,7 @@ app.get("/slack", function (req, res) {
 app.post("/event", async function (req, res) {
   try {
     const email = req.body.form_response.answers[0].text;
-    const newEmail = new Email({ email: email });
+    const newEmail = new Email({ email });
     await newEmail.save();
     await slackBot.sendScrappData();
     res.status(200).send("done");
