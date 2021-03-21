@@ -13,15 +13,15 @@ export const getAccessToken = async (data) => {
   return JSON.parse(authDetails);
 };
 
-export const sendScrappData = async () => {
+export const sendScrapeData = async () => {
   try {
     const users = await User.find({});
-    const scrappData = await wiki();
+    const scrapeData = await wiki();
     users.forEach(async (user) => {
       const data = {
         token: user.accessToken,
         channel: user.userId,
-        text: scrappData,
+        text: scrapeData,
       };
 
       const options = {

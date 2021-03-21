@@ -71,7 +71,10 @@ app.get("/auth/redirect", async function (req, res) {
 });
 
 app.get("/slack", function (req, res) {
-  res.render("slack.ejs", { clientId: process.env.CLIENT_ID });
+  res.render("slack.ejs", {
+    clientId: process.env.CLIENT_ID,
+    slackRedirectURL: process.env.SLACK_REDIRECT_URL
+  });
 });
 
 app.post("/event", async function (req, res) {
@@ -79,7 +82,11 @@ app.post("/event", async function (req, res) {
     const email = req.body.form_response.answers[0].text;
     const newEmail = new Email({ email });
     await newEmail.save();
-    await slackBot.sendScrappData();
+
+    const existingUser = await Account.findOne({ email }).exec();
+    if (!existingUser) {
+      await slackBot.sendScrapeData();
+    }
     res.status(200).send("done");
   } catch (err) {
     console.log(err);
