@@ -1,7 +1,7 @@
 import { Document, model, Schema } from "mongoose";
 import bcrypt from "bcrypt";
 
-const PASSWORD_SALT_ROUNDS = 5;
+const PASSWORD_SALT_ROUNDS = parseInt(process.env.PASSWORD_SALT_ROUNDS || '5', 10);
 
 interface IAccountSchema extends Document {
   email: string;
