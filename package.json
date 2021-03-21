@@ -6,7 +6,7 @@
   "author": "Viral Ruparel",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && cp -r src/templates/* dist/templates/* && node dist/server/server.js",
+    "start": "tsc && cp -R src/templates dist/ && node dist/server/server.js",
     "dev": "nodemon",
     "build": "tsc"
   },
