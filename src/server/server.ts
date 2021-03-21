@@ -7,10 +7,9 @@ import cronJob from "./cronJob";
 import * as slackBot from "./slackBot";
 
 dotenv.config();
+cronJob.start();
 
 const app = express();
-
-cronJob.start();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "../../public")));
