@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  web:
+    container_name: alloy
+    build:
+      context: ./
+      dockerfile: Dockerfile-dev
+    env_file: ./.env
+    ports:
+      - "${PORT}:${PORT}"
+    links:
+      - mongo
+    restart: always
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./dist:/usr/src/app/dist
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
