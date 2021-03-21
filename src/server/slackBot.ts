@@ -3,6 +3,7 @@ import User from "../model/user";
 import wiki from "./wiki";
 
 export const getAccessToken = async (data) => {
+  console.log(data);
   const options = {
     method: "POST",
     uri: "https://slack.com/api/oauth.v2.access",
@@ -10,7 +11,6 @@ export const getAccessToken = async (data) => {
   };
 
   const authDetails = await rp(options);
-  console.log(JSON.parse(authDetails));
   return JSON.parse(authDetails);
 };
 

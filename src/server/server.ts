@@ -13,7 +13,8 @@ const app = express();
 cronJob.start();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "../../public")));
+app.set("views", path.join(__dirname, "../templates"));
 
 
 app.post("/signup", async function(req, res) {
@@ -53,7 +54,7 @@ app.get("/auth/redirect", async function (req, res) {
     var data = {
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET,
-      code: req.query.code,
+      code: req.query.code
     };
     const response = await slackBot.getAccessToken(data);
     console.log("Response:::::", response);
@@ -63,7 +64,7 @@ app.get("/auth/redirect", async function (req, res) {
     };
     const newUser = new User(user);
     await newUser.save();
-    res.sendFile(path.resolve(__dirname + "/../../public/success.html"));
+    res.sendFile(path.resolve(__dirname + "../../../public/success.html"));
   } catch (err) {
     console.log(err);
     res.status(400).send(err);
@@ -71,12 +72,12 @@ app.get("/auth/redirect", async function (req, res) {
 });
 
 app.get("/slack", function (req, res) {
-  res.sendFile(path.resolve(__dirname + "/../../public/slack.html"));
+  res.render("slack.ejs", { clientId: process.env.CLIENT_ID });
 });
 
 app.post("/event", async function (req, res) {
   try {
-    const email = req.body.form_response.answers[0].email;
+    const email = req.body.form_response.answers[0].text;
     const newEmail = new Email({ email: email });
     await newEmail.save();
     await slackBot.sendScrappData();

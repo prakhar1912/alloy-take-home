@@ -21,7 +21,6 @@ const AccountSchema = Schema({
 });
 
 AccountSchema.methods.passwordMatches = function (inputPassword) {
-  console.log(this);
   return bcrypt.compareSync(inputPassword, this.password);
 };
 
